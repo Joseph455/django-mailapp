@@ -1,0 +1,23 @@
+{% extends 'mailapp/base.html' %}
+
+<title> {% block title %}Panel{% endblock %} </title>
+
+<body>
+{% block body %}
+  <div class="row bg-light m-2">
+    <div class="col m-2">
+      <h3 class="my-3 text-center">Instructions Page</h3>
+      {% if instructions %}
+      <div class="m-2 p-3 mb-2">
+      {% for instruction in instructions %}
+        <div class="border border-info alert-info shadow my-4 p-5">
+          <h4 class="">{{instruction.title}}</h4>
+          <p class="text-muted">{{instruction.description}}</p>
+        </div>
+      {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}
+</body>

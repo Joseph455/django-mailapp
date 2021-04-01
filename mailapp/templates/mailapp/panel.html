@@ -1,0 +1,68 @@
+{% extends 'mailapp/base.html' %}
+
+<title> {% block title %}Panel{% endblock %} </title>
+
+<body>
+{% block body %}
+<div class="row m-2" >
+  <div class="col-sm-8">
+    <div class="col-12 shadow p-4" >
+      <h3 class="text-center">M-Sender Panel</h3>
+      <p class="text-muted text-center">You can find details of your actions on M-sender here</p>
+      <div class="row mt-5">
+        <div class="col-12 mb-3">
+          <h5>History & Details</h5>
+        </div>
+        <div class="col border rounded p-3 alert-info mx-3 shadow">
+          <p class="">No of Mails sent:<strong class="ml-2 text-success">0</strong></p>
+          <p class="no-wrap">No of Successfull mails: <strong class="ml-2 text-success">0</strong></p>
+        </div>
+        <div class="col border rounded p-3 alert-info mx-3 shadow">
+          <p class="">No of Mailing list:<strong class="ml-2 text-success">{{num_maillist}}</strong></p>
+          <p class="no-wrap">No of Recipients: <strong class="ml-2 text-success">{{num_recipient}}</strong></p>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 shadow p-4" >
+      <h3 class="">Just getting started</h3>
+      <p class="text-muted">
+        If your new to M-sender here is a quick guide to get you going
+      </p>
+      <p>
+        M-sender is a light weight mail sending app which allows you to send mails to audience of any size
+        with ease ans flexibility.<br>
+        To send a mail in M-sender ist you need to:<br>
+      </p>
+        <ol class="text-muted">
+          <li><a href="{% url 'mailapp:maillistall' %}">Create and populate a mailing list.</a></li>
+          <li><a href="{% url 'mailapp:carriermail' %}">Next you you add a carrier mail a carrier mail is an email account you use to send mails to your audience</a></li>
+          <li>Once you have added your carrier mail you need to configure your carrier mail <a href="{% url 'mailapp:instructions' %}">click to see how.</a></li>
+          <li><a href="{% url 'mailapp:mail' %}">Finally you go to the Mail section where you can compose and send emails to your audience.</a></li>
+        </ol>
+      <p class="d-block d-md-none text-muted">If you need more instructions just head to the How To's Section. </p>
+      <p class="text-right d-none d-md-block text-muted">If you need more instructions just head to the How To's Section. </p>
+    </div>
+
+  </div>
+  <div class="col-sm-4 border text-center bg-light d-none d-sm-block ">
+    <div class="page-header mb-4 mt-4 border-bottom " >
+      <h3>Recent Actions</h3>
+    </div>
+    <div class="card-body" >
+       {% if actions %}
+       {% for action in actions %}
+       {% if action.is_recent %}
+      <div >
+        <p> {{action.get_action_display}}<br/><small>{{action.name}}</small> </p>
+      </div>
+      {% endif %}
+      {% endfor %}
+      {% else %}
+      <p >No recent Actions </p>
+      {% endif %}
+  </div>
+  </div>
+</div>
+
+{% endblock %}
+</body>

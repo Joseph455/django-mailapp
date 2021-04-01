@@ -1,0 +1,15 @@
+
+.table-wrapper-scroll-y {
+    max-height:110vh;
+    overflow-y:auto;
+    overflow:auto;
+    position:relative;
+}
+
+.table-wrapper-scroll-y-hidden {
+    overflow-y:scroll; !important
+}
+
+.recent-data {
+    background-color: #E8F0FF !important;
+}

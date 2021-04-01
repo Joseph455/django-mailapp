@@ -1,0 +1,108 @@
+{% extends 'mailapp/base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+
+{% block body %}
+  <div class="row bg-light shadow mx-4 my-5 p-4">
+    {% if messages %}
+      <div class="col-12">
+        {% for msg in messages %}
+          <p class="alert alert-success">{{msg}}</p>
+        {% endfor %}
+       </div>
+    {% endif %}
+    <div class="col-sm-7 border-right" >
+      <h3 class="text-muted my-3 text-center">Change Profile</h3>
+      <form class="form-group" action="{% url 'mailapp:editprofile' %}" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="id_username">Username:</label>
+          <input id="id_username" class="form-control" name="username" type="text" placeholder="Enter username"  maxlength="200" value="{{user.username}}" />
+        </div>
+        <div class="form-group">
+          <label for="id_first_name">First_name:</label>
+          <input id="id_first_name" class="form-control" name="first_name" type="text" placeholder="Enter first name"  maxlength="200" value="{{user.first_name}}" />
+        </div>
+        <div class="form-group">
+          <label for="id_last_name">Last name::</label>
+          <input id="id_last_name" class="form-control" name="last_name" type="text" placeholder="Enter last name"  maxlength="200" value="{{user.last_name}}" />
+        </div>
+        <!--div class="form-group">
+          <label for="id_email">Email:</label>
+          <input id="id_email" class="form-control" name="email" type="email" placeholder="Enter email address"  maxlength="200" value="{{user.email}}" />
+        </div -->
+
+        <input class="btn btn-success shadow" type="submit" value="Submit"/>
+      </form>
+    </div>
+
+    <div class="col-sm-5 my-auto" >
+    <h3 class="text-muted my-3 text-center">Change Password</h3>
+    <form class="form-group" action="{% url 'mailapp:changepassword' %}" method="POST">
+      {% csrf_token %}
+      <div class="form-group" >
+        <label for="id_new_password">New password:</label>
+        <input id="id_new_password" class="form-control" name="password" type="password" placeholder="Enter Mew passsword"  maxlength="200" />
+      </div>
+      <div class="form-group">
+        <label for="id_confirm_password">Confirm password:</label>
+        <input id="id_confirm_password" class="form-control" name="confirm_password" type="password" placeholder="Re-Enter passsword"  maxlength="200" />
+      </div>
+
+      <input class="btn btn-success shadow" type="submit" value="Submit"/>
+    </form>
+  </div>
+  </div>
+
+  <div class="row mx-4 shadow">
+    <div class="col" style="background-color: rgba(150, 0,0,0.5);">
+      <h3 class="text-warning my-4"><strong class="text-danger text-bolder">X</strong> Warning Danger Zone <strong class="text-danger text-bolder">X</strong></h3>
+      <div >
+        <a href="{% url 'mailapp:deactivateaccount' %}" data-toggle="modal" data-target="#deactivate-modal"><button class="btn btn-danger">Deactivate your account</button></a>
+        <p class="">To reactivate your account go to the <strong>account setting</strong> section of our <strong>account page</strong>.<p>
+      </div>
+      <div>
+        <a href="{% url 'mailapp:delete-account' %}" data-toggle="modal" data-target="#delete-modal"><button class="btn btn-danger">Delete your account</button></a>
+        <p class="text-warning">Please Note: deleting your account is irreversible. We advice you deativate your account instead</p>
+      </div>
+    </div>
+  </div>
+
+
+    <!-- modals -->
+    <!-- delete account modal -->
+    <div class="modal fade" id="delete-modal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="false" >
+      <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <p class="font-weight-bold text-muted text-center">Delete your account<br>
+              Are you sure ?</p>
+            <div class="d-flex justify-content-between">
+              <a href="{% url 'mailapp:delete-account' %}"><button class="btn btn-lg badge-pill btn-danger" >Yes</button></a>
+              <button type="button" class="btn btn-lg badge-pill btn-success" data-dismiss="modal" aria-label="Close">No</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- deactivate account modal -->
+    <div class="modal fade" id="deactivate-modal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="false" >
+      <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <p class="font-weight-bold text-muted text-center">Deactivate your account<br>
+              Are you sure ?</p>
+            <div class="d-flex justify-content-between">
+              <a href="{% url 'mailapp:deactivateaccount' %}"><button class="btn btn-lg badge-pill btn-danger" >Yes</button></a>
+              <button type="button" class="btn btn-lg badge-pill btn-success" data-dismiss="modal" aria-label="Close">No</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+{% endblock %}

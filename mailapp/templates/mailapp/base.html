@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    {% load static %}
+   <title>{% block title %}{% endblock %}</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'mailapp/style/vendor/bootstrap/css/bootstrap.min.css' %}"  rel="stylesheet" >
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'mailapp/style/css/simple-sidebar.css'%}"  rel="stylesheet" >
+
+    <!-- my styles -->
+    <link href="{% static 'mailapp/style/css/style.css'%}"  rel="stylesheet" >
+    <style>{% block style %}{% endblock %}</style>
+  </head>
+  <body>
+    <div class="d-flex " id="wrapper">
+
+      <!-- Sidebar -->
+      <div class="bg-light border-right border-bottom" id="sidebar-wrapper">
+        <div class="sidebar-heading">M-Sender Mail</div>
+        <div class="list-group list-group-flush">
+          <a href="{% url 'mailapp:panel' %}" class="list-group-item list-group-item-action bg-light ">Panel</a>
+          <a href="{% url 'mailapp:mail' %}" class="list-group-item list-group-item-action bg-light ">Mail</a>
+          <a href="{% url 'mailapp:carriermail' %}" class="list-group-item list-group-item-action bg-light ">Carrier Mails</a>
+          <a href="{% url 'mailapp:maillistall' %}" class="list-group-item list-group-item-action bg-light ">Mailing Lists</a>
+          <a href="{% url 'mailapp:instructions' %}" class="list-group-item list-group-item-action bg-light ">Instructions</a>
+        </div>
+      </div>
+      <!-- /#sidebar-wrapper -->
+
+      <!-- Page Content -->
+      <div id="page-content-wrapper">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+            <button class="btn btn-secondary" id="menu-toggle">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <button class="navbar-toggler btn btn-secondary" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+              <li class="nav-item active">
+                  <a class="nav-link " >welcome, <b>{{user.username}}</b>. <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="{% url 'mailapp:profile' %}">View your profile</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="{% url 'userapp:logout' %}">Logout</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+  {% block body %}
+
+  {% endblock %}
+  </div>
+  </div>
+  <footer class="py-3 bg-transparent text-center">
+    <div class="container">
+      <span class="text-capitalize"><a class="text-muted" href="">Privacy</a><a class="text-muted mx-3" href="">Terms and conditions</a><a class="text-muted" href="">Contact</a><br>
+        copyright @ 2019 M-sender</span>
+    </div>
+    <!-- /.container -->
+  </footer>
+    
+      <!-- /#wrapper -->
+
+      <!-- Bootstrap core JavaScript -->
+      <script src="{% static 'mailapp/style/vendor/jquery/jquery.min.js' %}"></script>
+      <script src="{% static 'mailapp/style/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+      <!-- Menu Toggle Script -->
+      <script>
+        $("#menu-toggle").click(function(e) {
+         e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+        });
+      </script>
+
+  </body>
+</html>

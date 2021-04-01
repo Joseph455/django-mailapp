@@ -1,0 +1,66 @@
+{% extends 'mailapp/base.html' %}
+<head>
+<title> {% block title %}Mail{% endblock %} </title>
+  <style>
+  {% block style %}
+  p.carrier__mail {
+	  background-color: rgba(0, 100, 255,0.3);
+	  width: 300px;
+	  word-wrap: break-word;
+	  }
+  {% endblock %}
+  </style>
+
+<body>
+{% block body %}
+<div class="row m-4 bg-light p-3 shadow">
+  {% if messages %}
+  <div class="col-12">
+    {% for msg in messages %}
+    <p class="alert alert-success">{{msg}}</p>
+    {% endfor %}
+  </div>
+  {% endif %}
+  <div class="col-sm-6 my-auto border-right">
+    <h3 class="my-3 text-center">Add Carrier Mail</h3>
+    <form class="form-group mt-3 p-3" action="{% url 'mailapp:addcarriermail' %}" method='POST' >
+      {% csrf_token %}
+      <div class="form-group" >
+        <label class="" for="id_username" >Username</label>
+        <input class="form-control" type="email" id="id_username" maxlength="200" name="username" required placeholder="e.g mail@example.com">
+        <small class="form-text text-muted">
+          Username should be the email address of the mail you want to use as a carrier.
+        </small>
+      </div>
+      <div class="form-group" >
+        <label class="" for="id_host" >Host</label>
+        <select class="form-control " name="host" id="id_host">
+          <option value="GM" selected>Google Mail</option>
+          <option value="YM" >Yahoo Mail</option>
+        </select>
+        <small class="form-text text-muted">
+          Host should be the email host of the mail you want to use as a carrier mail.
+        </small>
+      </div>
+      <button class="btn btn-secondary" type="submit">Add</button>
+    </form>
+  </div>
+
+  {% if carrier_mails %}
+  <div class="col-sm-6 text-center" >
+    <h3 class="my-3">Your Carrier Mails</h3>
+    {% for mail in carrier_mails %}
+    <div class="d-block p-2 d-flex flex-wrap ">
+      <p class="carrier__mail text-left mx-auto p-3 rounded">Username:<strong class="ml-2">{{mail.username}}</strong><br/> <span class="text-left">Host: </span><strong>{{mail.get_email_host_display}}</strong><br/>
+     <a href="{% url 'mailapp:deletecarriermail' mail.id %}"  class='btn badge-pill my-2 btn-danger'>click to delete</a>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>
+
+
+
+
+{% endblock %}
+</body>

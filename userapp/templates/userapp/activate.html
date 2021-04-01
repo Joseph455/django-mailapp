@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+  <form action="" method="POST">
+    <h3>Activate your account</h3>
+    {% for msg in messages %}
+      {{msg}}<br>
+    {% endfor %}
+    {% csrf_token %}
+    <input type="text" maxlength="200" placeholder="input Username" name="username" required/><br>
+    <input type="password" maxlength="200" placeholder="input password" name="password" required/><br>
+    <input type="email" maxlength="200" placeholder="input email" name="email" required/><br>
+    <input type="submit" value="submit" />
+  </form>
+</body>
+</html>

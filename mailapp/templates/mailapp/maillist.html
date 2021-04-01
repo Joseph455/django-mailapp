@@ -1,0 +1,168 @@
+{% extends 'mailapp/base.html' %}
+
+{% block title %}{{maillist.name}}{% endblock %}
+<style>
+  {% block style %}
+  .bg_list {
+	  background-color: rgba(0, 100, 255,0.3);
+	  word-wrap: break-word;
+	  }
+  {% endblock %}
+</style>
+
+
+{% block body %}
+<div class="row m-2 p-5 border border-light shadow rounded" >
+
+  {% if messages %}
+  <div class="col-12 p-2 alert alert-secondary" role="alert">
+    <ul>
+      {% for msg in messages %}
+        <li>{{msg}}</li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
+  <div class="col-sm-7 p-2" >
+    <div class="mb-5 ">
+      <form class="form-group form-row" action="{% url 'mailapp:addrecipient' maillist.id %}" method='POST' >
+        {% csrf_token %}
+        <div class="col-8">
+          <input id="id_recipient_email" class="form-control" type="text" name="email"  placeholder="Enter recipients email address" />
+        </div>
+        <div class="col-4">
+          <input class="btn btn-secondary" type="submit" value="Add" >
+        </div>
+      </form>
+    </div>
+    <div class="table-wrapper-scroll-y bg-light border shadow rounded" >
+      <table class="table table-bordered  bg-light ">
+        <thead >
+          <tr>
+            <th scope="row">No.</th>
+            <th scope="row">Recipient Email</th>
+          </tr>
+        </thead>
+        <tbody  >
+          {% for  recipient in recipients %}
+            <tr class="btn-light dropdown  " >
+              <td scope="col">{{recipient.get_position}}</td>
+              <td scope="col" id="{{recipient.id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" data-placement="bottom" title="Date Added: {{recipient.date_created}}"  >{{recipient.email}}</td>
+              <td scope="col" class="dropdown-menu" aria-labelledby="{{recipient.id}}">
+                <a class="dropdown-item" href="{% url 'mailapp:deleterecipient' maillist.id recipient.id %}"> Delete</a>
+                <a class="dropdown-item" data-toggle="modal" data-target="#id_modal_{{recipient.id}}"> Edit</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="col-sm-5 p-2 ">
+    <div class="mb-5">
+      <form class="form-group form-row" method="GET" action="{% url 'mailapp:maillist' maillist.id %}" >
+         <div class="input-group mb-2 col-10">
+          <div class="input-group-prepend">
+            <div class="input-group-text">&#128270;</div>
+          </div>
+          <input type="text" class="form-control"  name="search" placeholder="Find a recipient">
+        </div>
+        <div class="col-2" >
+          <input class="btn btn-secondary" type="submit" value="Search" >
+        </div>
+      </form>
+    </div>
+    {% if search_result %}
+    <div class="mb-5 border shadow p-2">
+      <h4 class="text-center ">Search Result</h4>
+      {% for result in search_result %}
+      <div class=" my-1 bg_list border rounded">
+        <div class="d-flex p-2  ">
+          <div class="dropdown" >
+            <div class="text-center" id="{{result.id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" data-placement="bottom" title="Date Added: {{result.date_created}}" >{{result.email}}</div>
+            <div class="dropdown-menu" aria-labelledby="{{result.id}}">
+              <a class="dropdown-item" href="{% url 'mailapp:deleterecipient' maillist.id result.id %}"> Delete</a>
+              <a class="dropdown-item" data-toggle="modal" data-target="#id_modal_{{result.id}}"> Edit</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% else %}
+      <div class="mb-2 bg-light border shadow">
+        <form class="form-group p-4 "  action="{% url 'mailapp:importrecipients' maillist.id %}" method='POST' >
+          <div class="form-group">
+            <h3 class="text-capitalize">import recipients</h3>
+          </div>
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="id_import_from" class="form-contorl font-weight-bold" >Mailing List: </label>
+            <select  id="id_import_from" name="import_from" class="form-control">
+              {% for list in maillists %}
+              {% if list.id is maillist.id %}
+              {% else %}
+              <option value="{{list.id}}">{{list.name}}</option>
+              {% endif %}
+              {% endfor %}
+            </select>
+          </div>
+          <div>
+            <button class="btn btn-secondary" type="submit">Import</button>
+          </div>
+        </form>
+      </div>
+      <div class="mb-2 bg-light border shadow">
+        <form class="form-group p-4" action="{% url 'mailapp:editmaillist' maillist.id %}" method='POST' >
+          <div class="form-group">
+            <h3 class="text-capitalize">Edit mailing list</h3>
+          </div>
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="id_name" class="form-contorl font-weight-bold" >Name: </label>
+            <input id="id_name" class="form-control" type="text" name="name"  placeholder="Enter your name" value="{{maillist.name}}" />
+          </div>
+          <div class="form-group">
+            <label for="id_descripition" class="form-contorl font-weight-bold" >Description: </label>
+            <textarea id="id_descripition" class="form-control" name="description" maxlength="200" placeholder="Enter mailing list description" >{{maillist.description}}</textarea>
+          </div>
+          <div>
+            <button class="btn btn-secondary" type="submit">Submit</button>
+          </div>
+        </form>
+      </div>
+    {% endif %}
+
+  </div>
+</div>
+
+
+<!-- Modals -->
+{% for recipient in recipients %}
+  <div class="modal fade " id="id_modal_{{recipient.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form class="form-group modal-body" action="{% url 'mailapp:editrecipient' maillist.id recipient.id %}" method="POST">
+          {% csrf_token %}
+          <p >{{addrecipientform.email}}</p>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button class="btn btn-primary" type="submit">Save changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+
+
+
+{% endblock %}

@@ -1,0 +1,78 @@
+<!DOCKTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v3.8.6">
+    <title>Home</title>
+
+    <!-- Bootstrap core CSS -->
+    {% load static %}
+<link href="{% static 'userapp/css/bootstrap.min.css' %}" rel="stylesheet" >
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+      .form-bg {
+        opacity: 0.5;
+      }
+    </style>
+    <!-- Custom styles for this template -->
+    <link href="{% static 'userapp/css/cover.css' %}" rel="stylesheet">
+  </head>
+  <body class="text-center">
+  <div class="cover-container d-flex p-3 mx-auto flex-column">
+    <header class="masthead mb-auto">
+      <div class="inner">
+        <h3 class="masthead-brand">M-Sender</h3>
+        {% block navigation %}
+        <nav class="nav nav-masthead justify-content-center">
+          <a class="nav-link active" href="">Home</a>
+          <a class="nav-link" href="{% url 'userapp:account' %}">Account</a>
+          <a class="nav-link" href="#">About</a>
+        </nav>
+        {% endblock %}
+      </div>
+    </header>
+    
+    {% block body %}
+    <main role="main" class="inner cover">
+      <h2 class="cover-heading d-block d-sm-none my-2">Welcome To M-Sender</h2>
+      <h1 class="cover-heading d-none d-sm-block my-2">Welcome To M-sender</h2>
+      <p class="lead text-muted">your N0.1 choice  for sending mass mails. we offer our services to you for free you only have to signup  and get started. check out our other products at git or on stark overflow</p>
+      <p>
+        <a href="{% url 'userapp:account' %}" class=" no-deco btn btn-lg btn-dark badge-pill">Get Started</a>  
+      </p>
+    </main>
+    {% endblock %}
+    
+    <footer class="mastfoot mt-auto">
+      <div class="inner">
+        <span class="text-capitalize"><a class="text-muted" href="">Privacy</a><a class="text-muted mx-3" href="">Terms and conditions</a><a class="text-muted" href="">Contact</a><br>
+        copyright @ 2019 M-sender</span>
+      </div>
+    </footer>
+  </div>
+ 
+  
+   <!-- Bootstrap core JavaScript -->
+      <script src="{% static 'userapp/style/vendor/jquery/jquery.min.js' %}"></script>
+      <script src="{% static 'userapp/style/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+
+</body>
+</html>
